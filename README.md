@@ -1,83 +1,83 @@
 # Audio Slides
 
-[English](./README.md) | [简体中文](./README.zh-CN.md)
+[简体中文](./README.md) | [English](./README.en.md)
 
-A Codex / Claude Code skill for creating striking HTML presentations from scratch, converting PowerPoint files, and adding Doubao V3 narration with subtitles.
+这是一个面向 Codex / Claude Code 的演示文稿 Skill，用来从零生成 HTML 幻灯片、转换 PowerPoint 文件，并为幻灯片增加豆包 V3 配音与字幕。
 
-## What This Does
+## 这个 Skill 能做什么
 
-`audio-slides` keeps the strongest parts of `frontend-slides` and extends them with audio-first presentation workflows.
+`audio-slides` 保留了 `frontend-slides` 最核心的能力，并在上面补上音频工作流。
 
-### Key Features
+### 核心特性
 
-- **Zero-dependency slide output**: Generate HTML presentations with inline CSS and JavaScript.
-- **Visual style discovery**: Let users choose from previews or presets instead of describing aesthetics abstractly.
-- **PPT conversion**: Convert `.ppt` / `.pptx` content into web presentations.
-- **Narrated decks**: Generate voice-over assets, subtitle files, and narration manifests.
-- **Doubao V3 workflow**: Support clone status checks, clone training, upgrade, live probe, and narration generation.
-- **Sharing support**: Keep deploy-to-URL and PDF export helpers from the original project.
+- **零依赖 HTML 输出**：生成内联 CSS / JavaScript 的网页幻灯片。
+- **风格探索**：通过预览或预设选择风格，而不是让用户抽象描述审美。
+- **PPT 转网页**：支持把 `.ppt` / `.pptx` 转成 HTML 演示文稿。
+- **配音幻灯片**：生成旁白音频、字幕文件和 `narration-manifest.json`。
+- **豆包 V3 工作流**：支持音色状态查询、音色训练、升级、真机 probe 和旁白生成。
+- **分享能力**：保留原项目的部署到 URL 和导出 PDF 能力。
 
-## Installation
+## 安装
 
-### For Codex
+### Codex
 
 ```powershell
 git clone https://github.com/kyirexy/audio-slides "$env:USERPROFILE\.codex\skills\audio-slides"
 ```
 
-Then invoke it with:
+然后这样调用：
 
 ```text
 $audio-slides
 ```
 
-### For Claude Code Style Local Skills
+### Claude Code 风格本地 Skill
 
-Clone or copy this repository into your local skills directory and invoke it with the matching skill name used by your environment.
+把仓库克隆或复制到你的本地 skills 目录里，然后按你环境里的 Skill 名称调用即可。
 
-## Usage
+## 使用方式
 
-### Create a New Presentation
-
-```text
-$audio-slides
-
-> I want a narrated product presentation for my AI startup
-```
-
-The skill will:
-
-1. ask about purpose, length, content, images, editing, narration, and subtitles,
-2. guide style selection with previews or presets,
-3. generate the HTML presentation,
-4. optionally generate Doubao V3 narration assets,
-5. optionally deploy the deck or export it to PDF.
-
-### Convert a PowerPoint
+### 新建演示文稿
 
 ```text
 $audio-slides
 
-> Convert my presentation.pptx into a narrated web deck
+> 我想做一份带旁白的 AI 产品介绍
 ```
 
-The skill will:
+Skill 会：
 
-1. extract slide content from the PowerPoint file,
-2. confirm the extracted structure,
-3. rebuild the deck as HTML,
-4. optionally add narration and subtitle assets.
+1. 询问用途、长度、内容、图片、编辑需求、配音和字幕需求。
+2. 通过预览或预设帮助你选风格。
+3. 生成 HTML 幻灯片。
+4. 按需生成豆包 V3 配音资产。
+5. 按需部署或导出 PDF。
 
-## Doubao V3 Setup
+### 转换 PowerPoint
 
-Create a local config file:
+```text
+$audio-slides
+
+> 把我的 presentation.pptx 转成带配音的网页演示
+```
+
+Skill 会：
+
+1. 先提取 PowerPoint 内容。
+2. 和你确认提取结果。
+3. 重新生成 HTML 演示。
+4. 按需补上配音和字幕资产。
+
+## 豆包 V3 配置
+
+先创建本地配置文件：
 
 ```powershell
 New-Item -ItemType Directory -Force .audio-slides | Out-Null
 Copy-Item .\config\providers\volcengine-doubao.example.json .\.audio-slides\tts-provider.json
 ```
 
-Fill these fields in `.audio-slides/tts-provider.json`:
+在 `.audio-slides/tts-provider.json` 里填写这些字段：
 
 - `credentials.app_id`
 - `credentials.access_key`
@@ -86,17 +86,17 @@ Fill these fields in `.audio-slides/tts-provider.json`:
 - `synthesis.voice_type`
 - `synthesis.resource_id`
 
-The user should choose the real `speaker_id` and `voice_type` during setup. They are not hardcoded in the repository.
+真实的 `speaker_id` 和 `voice_type` 由用户首次使用时自己提供或选择，仓库里不会写死。
 
-### Common Commands
+### 常用命令
 
-Check clone status:
+查询音色状态：
 
 ```powershell
 py .\scripts\tts_generator.py clone-status --config .\.audio-slides\tts-provider.json
 ```
 
-Train a clone voice:
+训练音色：
 
 ```powershell
 py .\scripts\tts_generator.py clone-train `
@@ -105,7 +105,7 @@ py .\scripts\tts_generator.py clone-train `
   --demo-text "This is the preview sentence."
 ```
 
-Run a live probe:
+运行真机 probe：
 
 ```powershell
 py .\scripts\tts_generator.py probe `
@@ -113,7 +113,7 @@ py .\scripts\tts_generator.py probe `
   --text "Audio Slides live probe."
 ```
 
-Generate narration assets:
+生成整套配音资产：
 
 ```powershell
 py .\scripts\tts_generator.py synthesize `
@@ -122,22 +122,22 @@ py .\scripts\tts_generator.py synthesize `
   --output-dir .\.audio-slides\generated
 ```
 
-## Current Support
+## 当前支持情况
 
-- **Implemented**: Doubao V3 narration workflow
-- **Implemented**: subtitle generation from narration timing
-- **Planned**: additional TTS and ASR providers
+- **已实现**：豆包 V3 配音工作流
+- **已实现**：从旁白时间生成字幕
+- **规划中**：更多 TTS / ASR 服务
 
-## Requirements
+## 依赖要求
 
-- Codex or Claude Code
-- Python for the helper scripts
-- A Doubao V3 account if you want narration
-- Node.js for deployment and PDF export helpers
+- Codex 或 Claude Code
+- Python
+- 如果要用配音，需要豆包 V3 账号
+- 如果要部署或导出 PDF，需要 Node.js
 
-## Credits
+## 致谢
 
-Built on top of the architecture and design system of [frontend-slides](https://github.com/zarazhangrui/frontend-slides) by [@zarazhangrui](https://github.com/zarazhangrui).
+本仓库基于 [frontend-slides](https://github.com/zarazhangrui/frontend-slides) 的架构和设计系统扩展而来，作者是 [@zarazhangrui](https://github.com/zarazhangrui)。
 
 ## License
 
