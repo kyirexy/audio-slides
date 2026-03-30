@@ -1,81 +1,74 @@
 # Audio Slides
 
-[简体中文](./README.zh-CN.md) | [English](./README.md)
+[English](./README.md) | [简体中文](./README.zh-CN.md)
 
-[![MIT License](https://img.shields.io/badge/license-MIT-0f172a.svg)](./LICENSE)
-[![Skill](https://img.shields.io/badge/skill-Codex%20%2F%20Claude%20Code-2563eb.svg)](./SKILL.md)
-[![Provider](https://img.shields.io/badge/provider-Doubao%20V3-16a34a.svg)](./references/volcengine-doubao.md)
-[![Output](https://img.shields.io/badge/output-HTML%20Slides-f59e0b.svg)](./html-template.md)
+这是一个面向 Codex / Claude Code 的演示文稿 Skill，用来从零生成 HTML 幻灯片、转换 PowerPoint 文件，并为幻灯片增加豆包 V3 配音与字幕。
 
-`audio-slides` 是一个面向 Codex 或 Claude Code 的演示文稿 Skill。它完整继承了 `frontend-slides` 的核心能力，并在此基础上增加了配音、字幕、音频同步播放、豆包 V3 音色复刻工作流。
+## 这个 Skill 能做什么
 
-> 目标很明确：原项目能做的事情，这个仓库不能少；原项目没有的音频能力，这个仓库要补上。
+`audio-slides` 保留了 `frontend-slides` 最核心的能力，并在上面补上音频工作流。
 
-## 能力覆盖
+### 核心特性
 
-这个仓库的定位是“比 `frontend-slides` 更强”，而不是“做一个音频分支砍掉原能力”。
-
-### 已继承的原始能力
-
-- 从零生成 HTML 幻灯片
-- 将 PPT / PPTX 转成网页幻灯片
-- 增强现有 HTML 幻灯片
-- 风格预览与风格预设选择
-- 严格的视口适配规则
-- 内联编辑能力指引
-- 一键部署到 URL
-- 一键导出 PDF
-
-### 新增能力
-
-- 豆包 V3 音色复刻配置
-- 真机 probe 命令
-- 旁白清单 `narration-manifest.json`
-- 从合成时间生成 `.srt` / `.vtt`
-- 带字幕和播放器控制区的 HTML 模板
-- 音频驱动翻页与同步的设计规范
+- **零依赖 HTML 输出**：生成内联 CSS / JavaScript 的网页幻灯片。
+- **风格探索**：通过预览或预设选择风格，而不是让用户抽象描述审美。
+- **PPT 转网页**：支持把 `.ppt` / `.pptx` 转成 HTML 演示文稿。
+- **配音幻灯片**：生成旁白音频、字幕文件和 `narration-manifest.json`。
+- **豆包 V3 工作流**：支持音色状态查询、音色训练、升级、真机 probe 和旁白生成。
+- **分享能力**：保留原项目的部署到 URL 和导出 PDF 能力。
 
 ## 安装
 
 ### Codex
 
-将仓库克隆到 Codex 的技能目录：
-
 ```powershell
 git clone https://github.com/kyirexy/audio-slides "$env:USERPROFILE\.codex\skills\audio-slides"
 ```
 
-然后直接调用：
+然后这样调用：
 
 ```text
 $audio-slides
 ```
 
-### Claude Code
+### Claude Code 风格本地 Skill
 
-如果你使用的是 Claude Code 风格的本地 Skill 目录，也可以把仓库克隆或复制到对应目录，然后用你环境里对应的 Skill 名称调用。
+把仓库克隆或复制到你的本地 skills 目录里，然后按你环境里的 Skill 名称调用即可。
 
-## 快速开始
+## 使用方式
 
-### 纯视觉模式
+### 新建演示文稿
 
-1. 调用 `$audio-slides`
-2. 选择新建演示、PPT 转换，或增强已有演示
-3. 选择风格探索或直接选择预设
-4. 生成 HTML 幻灯片
-5. 按需部署或导出
+```text
+$audio-slides
 
-### 配音模式
+> 我想做一份带旁白的 AI 产品介绍
+```
 
-1. 调用 `$audio-slides`
-2. 告诉 Skill 你需要配音或字幕
-3. 如果本地还没有配置豆包 V3，就先填写配置
-4. 运行 `clone-status`
-5. 如果音色还没准备好，运行 `clone-train`
-6. 运行一次 live `probe`
-7. 再生成完整配音资产和最终幻灯片
+Skill 会：
 
-## 首次配置豆包 V3
+1. 询问用途、长度、内容、图片、编辑需求、配音和字幕需求，
+2. 通过预览或预设帮助你选风格，
+3. 生成 HTML 幻灯片，
+4. 按需生成豆包 V3 配音资产，
+5. 按需部署或导出 PDF。
+
+### 转换 PowerPoint
+
+```text
+$audio-slides
+
+> 把我的 presentation.pptx 转成带配音的网页演示
+```
+
+Skill 会：
+
+1. 先提取 PowerPoint 内容，
+2. 和你确认提取结果，
+3. 重新生成 HTML 演示，
+4. 按需补上配音和字幕资产。
+
+## 豆包 V3 配置
 
 先创建本地配置文件：
 
@@ -84,7 +77,7 @@ New-Item -ItemType Directory -Force .audio-slides | Out-Null
 Copy-Item .\config\providers\volcengine-doubao.example.json .\.audio-slides\tts-provider.json
 ```
 
-然后填写这些字段：
+在 `.audio-slides/tts-provider.json` 里填写这些字段：
 
 - `credentials.app_id`
 - `credentials.access_key`
@@ -93,17 +86,17 @@ Copy-Item .\config\providers\volcengine-doubao.example.json .\.audio-slides\tts-
 - `synthesis.voice_type`
 - `synthesis.resource_id`
 
-其中 `speaker_id` 和 `voice_type` 由最终用户自己选择或提供。仓库不会把真实生产音色 ID 写死。
+真实的 `speaker_id` 和 `voice_type` 由用户首次使用时自己提供或选择，仓库里不会写死。
 
-## 常用命令
+### 常用命令
 
-### 查询音色状态
+查询音色状态：
 
 ```powershell
 py .\scripts\tts_generator.py clone-status --config .\.audio-slides\tts-provider.json
 ```
 
-### 上传训练样本
+训练音色：
 
 ```powershell
 py .\scripts\tts_generator.py clone-train `
@@ -112,7 +105,7 @@ py .\scripts\tts_generator.py clone-train `
   --demo-text "This is the preview sentence."
 ```
 
-### 运行真机 Probe
+运行真机 probe：
 
 ```powershell
 py .\scripts\tts_generator.py probe `
@@ -120,7 +113,7 @@ py .\scripts\tts_generator.py probe `
   --text "Audio Slides live probe."
 ```
 
-### 生成整套配音资产
+生成整套配音资产：
 
 ```powershell
 py .\scripts\tts_generator.py synthesize `
@@ -129,110 +122,22 @@ py .\scripts\tts_generator.py synthesize `
   --output-dir .\.audio-slides\generated
 ```
 
-## Narration Plan 示例
+## 当前支持情况
 
-```json
-{
-  "deck_title": "Audio Slides Demo",
-  "slides": [
-    {
-      "slide_index": 1,
-      "slide_id": "slide-01",
-      "title": "Opening",
-      "narration": "欢迎来到 Audio Slides，这套演示支持旁白和字幕。"
-    }
-  ]
-}
-```
+- **已实现**：豆包 V3 配音工作流
+- **已实现**：从旁白时间生成字幕
+- **规划中**：更多 TTS / ASR 服务
 
-## 输出结构
+## 依赖要求
 
-纯视觉模式下，通常还是单个 HTML 文件。
-
-带配音时，通常会输出：
-
-```text
-deck.html
-deck-assets/
-  narration-manifest.json
-  narration.vtt
-  narration.srt
-  slide-01.mp3
-  slide-02.mp3
-```
-
-## 配音服务支持情况
-
-为了避免 README 和实际代码不一致，这里明确区分“已实现”和“规划中”。
-
-| 服务 | 状态 | 说明 |
-| --- | --- | --- |
-| 豆包 Doubao V3 | 已实现 | 音色训练、状态查询、升级、probe、旁白生成 |
-| Lipvoice | 规划中 | 低成本扩展方向 |
-| Azure AI Speech | 规划中 | 企业和多语言方向 |
-| Minimax | 规划中 | 情感表达方向 |
-| Reecho | 规划中 | 低门槛中文复刻方向 |
-| Fish Audio | 规划中 | 高拟真方向 |
-| LMNT | 规划中 | 低延迟方向 |
-| Qwen3-TTS | 规划中 | 云端与本地兼容方向 |
-| Edge-TTS | 规划中 | 免费测试兜底方案 |
-| 本地开源栈 | 规划中 | 隐私和自托管方向 |
-
-## 字幕策略
-
-### 目前已实现
-
-- 从合成时间信息生成字幕
-- 输出 `.srt` 和 `.vtt`
-- 通过 `scripts/subtitle_helper.py` 处理字幕文件
-
-### 下一步适合补强的方向
-
-- 豆包兼容的 ASR 对齐
-- Whisper / faster-whisper 兜底
-- 直接导入用户自己的 SRT / VTT
-
-## 仓库结构
-
-| 路径 | 作用 |
-| --- | --- |
-| `SKILL.md` | Skill 主流程说明 |
-| `STYLE_PRESETS.md` | 继承自原项目的风格预设库 |
-| `viewport-base.css` | 继承自原项目的视口适配 CSS |
-| `animation-patterns.md` | 继承自原项目的动画参考 |
-| `html-template.md` | HTML 架构、内联编辑、图片与音频模板规范 |
-| `audio-features.md` | 旁白、字幕、同步、时间轴行为说明 |
-| `references/volcengine-doubao.md` | 豆包 V3 配置与接口参考 |
-| `scripts/extract-pptx.py` | PPT / PPTX 提取脚本 |
-| `scripts/deploy.sh` | Vercel 部署脚本 |
-| `scripts/export-pdf.sh` | PDF 导出脚本 |
-| `scripts/tts_generator.py` | 豆包 V3 训练、查询、probe、旁白生成脚本 |
-| `scripts/subtitle_helper.py` | 字幕生成脚本 |
-| `config/providers/volcengine-doubao.example.json` | 本地配置模板 |
-
-## 分享与导出
-
-这个仓库保留了原项目的分享流程：
-
-```powershell
-bash .\scripts\deploy.sh .\deck-folder\
-bash .\scripts\export-pdf.sh .\deck.html
-```
-
-## 路线图建议
-
-后续最有价值的扩展方向：
-
-- 背景音乐与旁白自动闪避
-- 演讲者备注与 Presenter Mode
-- 带音频的视频导出
-- 多厂商 TTS 切换
-- 更强的字幕对齐链路
-- 多语言配音与多语言 Deck 生成
+- Codex 或 Claude Code
+- Python
+- 如果要用配音，需要豆包 V3 账号
+- 如果要部署或导出 PDF，需要 Node.js
 
 ## 致谢
 
-本仓库基于 [frontend-slides](https://github.com/zarazhangrui/frontend-slides) 的架构和设计思想扩展而来。保留下来的设计系统文件、工作流思路与许可证信息应继续保留原始归属。
+本仓库基于 [frontend-slides](https://github.com/zarazhangrui/frontend-slides) 的架构和设计系统扩展而来，作者是 [@zarazhangrui](https://github.com/zarazhangrui)。
 
 ## License
 

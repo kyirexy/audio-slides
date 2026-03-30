@@ -1,93 +1,76 @@
 # Audio Slides
 
-[简体中文](./README.zh-CN.md) | [English](./README.md)
+[English](./README.md) | [简体中文](./README.zh-CN.md)
 
-[![MIT License](https://img.shields.io/badge/license-MIT-0f172a.svg)](./LICENSE)
-[![Skill](https://img.shields.io/badge/skill-Codex%20%2F%20Claude%20Code-2563eb.svg)](./SKILL.md)
-[![Provider](https://img.shields.io/badge/provider-Doubao%20V3-16a34a.svg)](./references/volcengine-doubao.md)
-[![Output](https://img.shields.io/badge/output-HTML%20Slides-f59e0b.svg)](./html-template.md)
+A Codex / Claude Code skill for creating striking HTML presentations from scratch, converting PowerPoint files, and adding Doubao V3 narration with subtitles.
 
-Audio Slides is a presentation skill for Codex or Claude Code. It preserves the full `frontend-slides` baseline and adds narration, subtitles, synchronized playback, and Doubao V3 clone-voice workflows.
+## What This Does
 
-> The goal of this repository is simple: keep everything the original skill already did well, then extend it with audio-first presentation workflows.
+`audio-slides` keeps the strongest parts of `frontend-slides` and extends them with audio-first presentation workflows.
 
-## Why This Repo Exists
+### Key Features
 
-`frontend-slides` is already a strong foundation for HTML presentations. This repo keeps that foundation and adds:
+- **Zero-dependency slide output**: Generate HTML presentations with inline CSS and JavaScript.
+- **Visual style discovery**: Let users choose from previews or presets instead of describing aesthetics abstractly.
+- **PPT conversion**: Convert `.ppt` / `.pptx` content into web presentations.
+- **Narrated decks**: Generate voice-over assets, subtitle files, and narration manifests.
+- **Doubao V3 workflow**: Support clone status checks, clone training, upgrade, live probe, and narration generation.
+- **Sharing support**: Keep deploy-to-URL and PDF export helpers from the original project.
 
-- narrated slide generation,
-- subtitle and timing artifacts,
-- Doubao V3 voice-clone setup,
-- probe commands for real provider verification,
-- audio-aware HTML template guidance.
+## Installation
 
-## Capability Coverage
-
-This repository is meant to be strictly stronger than the original `frontend-slides`, not weaker.
-
-### Inherited From `frontend-slides`
-
-- Create new presentations from scratch
-- Convert PPT and PPTX files into HTML decks
-- Enhance existing HTML slide decks
-- Use visual style discovery with presets and previews
-- Keep strict viewport-fit rules
-- Preserve inline editing guidance
-- Deploy to a live URL
-- Export to PDF
-
-### Added By `audio-slides`
-
-- Doubao V3 clone-voice configuration
-- Live voice probe commands
-- Narration manifest generation
-- Subtitle generation from synthesis timing
-- Audio transport and subtitle chrome guidance
-- Narrated deck asset layout
-
-## Install
-
-### Codex
-
-Clone the repository into your Codex skill directory:
+### For Codex
 
 ```powershell
 git clone https://github.com/kyirexy/audio-slides "$env:USERPROFILE\.codex\skills\audio-slides"
 ```
 
-Then invoke it as:
+Then invoke it with:
 
 ```text
 $audio-slides
 ```
 
-### Claude Code
+### For Claude Code Style Local Skills
 
-If you use Claude Code style local skills, clone or copy this repository into your local skills directory and invoke it with the matching skill name used by your environment.
+Clone or copy this repository into your local skills directory and invoke it with the matching skill name used by your environment.
 
-## Quick Start
+## Usage
 
-### Visual-Only Slides
+### Create a New Presentation
 
-1. Invoke `$audio-slides`
-2. Choose a new deck, PPT conversion, or enhancement flow
-3. Pick a style path or direct preset
-4. Generate the HTML deck
-5. Optionally deploy or export it
+```text
+$audio-slides
 
-### Narrated Slides
+> I want a narrated product presentation for my AI startup
+```
 
-1. Invoke `$audio-slides`
-2. Tell the skill you want narration or subtitles
-3. Configure Doubao V3 if no local provider config exists yet
-4. Run `clone-status`
-5. If needed, run `clone-train`
-6. Run a live `probe`
-7. Generate narration assets and the final deck
+The skill will:
 
-## First-Run Doubao V3 Setup
+1. ask about purpose, length, content, images, editing, narration, and subtitles,
+2. guide style selection with previews or presets,
+3. generate the HTML presentation,
+4. optionally generate Doubao V3 narration assets,
+5. optionally deploy the deck or export it to PDF.
 
-Create the local provider config:
+### Convert a PowerPoint
+
+```text
+$audio-slides
+
+> Convert my presentation.pptx into a narrated web deck
+```
+
+The skill will:
+
+1. extract slide content from the PowerPoint file,
+2. confirm the extracted structure,
+3. rebuild the deck as HTML,
+4. optionally add narration and subtitle assets.
+
+## Doubao V3 Setup
+
+Create a local config file:
 
 ```powershell
 New-Item -ItemType Directory -Force .audio-slides | Out-Null
@@ -103,17 +86,17 @@ Fill these fields in `.audio-slides/tts-provider.json`:
 - `synthesis.voice_type`
 - `synthesis.resource_id`
 
-The user should choose the real `speaker_id` and `voice_type` when they use the skill. These identifiers are intentionally not hardcoded in the repository.
+The user should choose the real `speaker_id` and `voice_type` during setup. They are not hardcoded in the repository.
 
-## Commands
+### Common Commands
 
-### Check Clone Status
+Check clone status:
 
 ```powershell
 py .\scripts\tts_generator.py clone-status --config .\.audio-slides\tts-provider.json
 ```
 
-### Train A Clone Voice
+Train a clone voice:
 
 ```powershell
 py .\scripts\tts_generator.py clone-train `
@@ -122,7 +105,7 @@ py .\scripts\tts_generator.py clone-train `
   --demo-text "This is the preview sentence."
 ```
 
-### Run A Live Probe
+Run a live probe:
 
 ```powershell
 py .\scripts\tts_generator.py probe `
@@ -130,7 +113,7 @@ py .\scripts\tts_generator.py probe `
   --text "Audio Slides live probe."
 ```
 
-### Generate Narration Assets
+Generate narration assets:
 
 ```powershell
 py .\scripts\tts_generator.py synthesize `
@@ -139,109 +122,22 @@ py .\scripts\tts_generator.py synthesize `
   --output-dir .\.audio-slides\generated
 ```
 
-## Narration Plan Example
+## Current Support
 
-```json
-{
-  "deck_title": "Audio Slides Demo",
-  "slides": [
-    {
-      "slide_index": 1,
-      "slide_id": "slide-01",
-      "title": "Opening",
-      "narration": "Welcome to Audio Slides. This deck includes narration and subtitles."
-    }
-  ]
-}
-```
+- **Implemented**: Doubao V3 narration workflow
+- **Implemented**: subtitle generation from narration timing
+- **Planned**: additional TTS and ASR providers
 
-## Output Model
+## Requirements
 
-Visual-only decks remain a single HTML file.
+- Codex or Claude Code
+- Python for the helper scripts
+- A Doubao V3 account if you want narration
+- Node.js for deployment and PDF export helpers
 
-Narrated decks typically use:
+## Credits
 
-```text
-deck.html
-deck-assets/
-  narration-manifest.json
-  narration.vtt
-  narration.srt
-  slide-01.mp3
-  slide-02.mp3
-```
-
-## Provider Support
-
-The repository should not claim support that does not exist in code yet, so the matrix below separates current support from roadmap items.
-
-| Provider | Status | Notes |
-| --- | --- | --- |
-| Doubao V3 | Implemented | Clone status, clone training, upgrade, probe, narration synthesis |
-| Lipvoice | Planned | Good low-cost expansion target |
-| Azure AI Speech | Planned | Good enterprise and multilingual target |
-| Minimax | Planned | Good emotional TTS target |
-| Reecho | Planned | Good low-friction Chinese clone path |
-| Fish Audio | Planned | Good realism-focused target |
-| LMNT | Planned | Good low-latency target |
-| Qwen3-TTS | Planned | Good cloud plus local path |
-| Edge-TTS | Planned | Good free testing fallback |
-| Local open-source stack | Planned | Good privacy and self-host path |
-
-## Subtitle Strategy
-
-### Implemented Now
-
-- subtitle generation from synthesis timing in the narration manifest
-- `.srt` and `.vtt` emission through `scripts/subtitle_helper.py`
-
-### Good Next Steps
-
-- Doubao-compatible ASR alignment
-- Whisper or faster-whisper fallback
-- user-supplied SRT or VTT import
-
-## Repository Layout
-
-| Path | Purpose |
-| --- | --- |
-| `SKILL.md` | Main skill workflow |
-| `STYLE_PRESETS.md` | Visual presets inherited from the original project |
-| `viewport-base.css` | Viewport-fit baseline CSS inherited from the original project |
-| `animation-patterns.md` | Animation reference inherited from the original project |
-| `html-template.md` | HTML architecture, inline editing, image, and audio guidance |
-| `audio-features.md` | Narration, subtitles, sync, and timeline behavior |
-| `references/volcengine-doubao.md` | Doubao V3 setup notes and API references |
-| `scripts/extract-pptx.py` | PPT and PPTX extraction |
-| `scripts/deploy.sh` | Vercel deployment helper |
-| `scripts/export-pdf.sh` | PDF export helper |
-| `scripts/tts_generator.py` | Doubao V3 clone train, status, probe, and narration generation |
-| `scripts/subtitle_helper.py` | Subtitle file generation from narration manifests |
-| `config/providers/volcengine-doubao.example.json` | Example local provider config |
-
-## Share And Export
-
-This repository keeps the original share workflow:
-
-```powershell
-bash .\scripts\deploy.sh .\deck-folder\
-bash .\scripts\export-pdf.sh .\deck.html
-```
-
-## Roadmap Ideas
-
-High-value next steps for this repository:
-
-- background music plus narration ducking
-- speaker notes and presenter mode
-- video export with audio
-- multi-provider TTS switching
-- stronger subtitle alignment paths
-- multilingual deck and narration generation
-
-## Attribution
-
-This repository is intentionally bootstrapped from the architecture of `frontend-slides` by [@zarazhangrui](https://github.com/zarazhangrui). Reused design-system files and workflow ideas should retain attribution and license context.
+Built on top of the architecture and design system of [frontend-slides](https://github.com/zarazhangrui/frontend-slides) by [@zarazhangrui](https://github.com/zarazhangrui).
 
 ## License
 
