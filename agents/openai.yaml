@@ -1,0 +1,7 @@
+interface:
+  display_name: "Audio Slides"
+  short_description: "Build visually bold HTML decks with narration, subtitles, and synced playback."
+  default_prompt: "Use $audio-slides to create a striking narrated HTML presentation with synchronized subtitles."
+
+policy:
+  allow_implicit_invocation: true

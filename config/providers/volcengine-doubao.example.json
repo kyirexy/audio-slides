@@ -1,0 +1,28 @@
+{
+  "provider": "volcengine-doubao-v3",
+  "credentials": {
+    "app_id": "replace-with-your-app-id",
+    "access_key": "replace-with-your-access-key"
+  },
+  "clone": {
+    "speaker_id": "S_replace_with_console_voice_id",
+    "voice_type": "S_replace_with_console_or_icl_voice_id",
+    "language": 0,
+    "extra_params": {
+      "enable_audio_denoise": false,
+      "voice_clone_denoise_model_id": ""
+    }
+  },
+  "synthesis": {
+    "resource_id": "seed-icl-2.0",
+    "voice_type": "S_replace_with_console_or_icl_voice_id",
+    "model": "seed-tts-1.0",
+    "format": "mp3",
+    "sample_rate": 24000,
+    "speech_rate": 0,
+    "enable_subtitle": true,
+    "uid": "audio-slides-user",
+    "silence_duration": 150,
+    "additions": {}
+  }
+}

@@ -1,0 +1,9 @@
+.audio-slides/
+.claude-design/
+dist/
+output/
+tmp/
+__pycache__/
+*.pyc
+*.local.json
+*.log
