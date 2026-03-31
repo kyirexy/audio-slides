@@ -1,5 +1,6 @@
 .audio-slides/
 .claude-design/
+.tmp-test/
 dist/
 output/
 tmp/
