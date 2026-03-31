@@ -124,7 +124,7 @@ Recommend this default path first:
 
 ### First-Run Configuration
 
-If no local provider config exists, create one from [`config/providers/volcengine-doubao.example.json`](config/providers/volcengine-doubao.example.json).
+If no local provider config exists, create one from [`volcengine-doubao.example.json`](volcengine-doubao.example.json).
 
 Use a local ignored file such as:
 
@@ -164,7 +164,7 @@ If the probe fails, stop and show the exact provider error. Fix credentials, res
 
 When the chosen provider is Doubao, read:
 
-- [`references/volcengine-doubao.md`](references/volcengine-doubao.md)
+- [`volcengine-doubao.md`](volcengine-doubao.md)
 
 ## Phase 2: Style Discovery
 
@@ -328,7 +328,7 @@ For narrated decks, prefer deploying the full folder instead of a lone HTML file
 | [`html-template.md`](html-template.md) | HTML architecture and controller layout | Deck generation |
 | [`animation-patterns.md`](animation-patterns.md) | Motion snippets and pacing ideas | Deck generation |
 | [`audio-features.md`](audio-features.md) | Audio sync, subtitles, waveform, and transport behavior | Narrated decks |
-| [`references/volcengine-doubao.md`](references/volcengine-doubao.md) | Doubao V3 config and API notes | Doubao setup |
+| [`volcengine-doubao.md`](volcengine-doubao.md) | Doubao V3 config and API notes | Doubao setup |
 | [`scripts/extract-pptx.py`](scripts/extract-pptx.py) | PPT extraction | PPT conversion |
 | [`scripts/tts_generator.py`](scripts/tts_generator.py) | V3 clone training, status, probe, and narration generation | AI narration |
 | [`scripts/subtitle_helper.py`](scripts/subtitle_helper.py) | Subtitle generation and conversion | Subtitle output |
